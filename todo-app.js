@@ -72,7 +72,7 @@
             };
   }
 
-  function createTodoApp(container, title = 'Список Дел') {
+  function createTodoApp(container, title = 'Список Дел', doArr = []) {
     let todoAppTitle = createAppTitle(title);
     let todoItemForm = createTodoItemForm();
     let todoList = createTodoList();
@@ -81,7 +81,7 @@
     container.append(todoItemForm.form);
     container.append(todoList);
 
-    // если в input что-то ввели,то делаем кнопку disabled
+    // если в input что-то ввели,то делаем кнопку enabled
     todoItemForm.input.addEventListener('input', function() {
       if (todoItemForm.input.value) {
         // console.log('Обнаружил печать в input')
@@ -91,6 +91,31 @@
         todoItemForm.button.disabled = true;
       }
     });
+
+    // Если массив с делами на входе не пустой
+    if (doArr.length > 0) {
+      // console.log('Массив на вход не пустой');
+      // Перебираем элементы массива
+      for (cur_item of doArr) {
+        // console.log(cur_item);
+        // создаем элементы списка
+        let todoItem = createTodoItem(cur_item['name']);
+        // делаем элемент зеленым, если дело 'done' == true
+        if (cur_item['done'] == true) {
+          todoItem.item.classList.add('list-group-item-success');
+        }
+        // добавляем обработчики на кнопки
+        todoItem.doneButton.addEventListener('click', function() {
+          todoItem.item.classList.toggle('list-group-item-success');
+        })
+        todoItem.deleteButton.addEventListener('click', function() {
+          if (confirm('Вы уверены')) {
+            todoItem.item.remove();
+          }
+        })
+        todoList.append(todoItem.item)
+      }
+    };
 
     // Функция создания нового элемента списка дел
     todoItemForm.form.addEventListener('submit', function(e) {
@@ -117,15 +142,55 @@
       // и делаем кнопку disabled
       todoItemForm.input.value = '';
       todoItemForm.button.disabled = true;
+      pushToLocalStorage();
     });
+
+    // Кладем массив обьектов в LocalStorage
+    function pushToLocalStorage() {
+      // Собираем текущий массив дел из DOM
+      let curTodoArr = getCurentTodoArr();
+      // Переводим в JSON формат
+      let curJsonStr = JSON.stringify(curTodoArr);
+      // кладем массив в localstorage
+      localStorage.setItem(title, curJsonStr);
+      // Смотрим что положили
+      console.log('Кладем в ', title, curJsonStr);
+    }
+    pushToLocalStorage();
+
+    // получаем массив списка дел из DOM через CSS селектор
+    function getCurentTodoArr() {
+      let toDoArr = []
+      let todoElements = document.querySelectorAll('li.list-group-item');
+      for (curTodoElements of todoElements) {
+        // Получаем имя дела
+        let curName = curTodoElements.childNodes[0].textContent;
+        // проверяем его на сделанность
+        let curDone = false;
+        if(curTodoElements.classList.contains('list-group-item-success')) {
+          curDone = true;
+        }
+        // собираем обьект
+        let curToDo = {name:curName, done:curDone}
+        // Пушим обьект в массив
+        toDoArr.push(curToDo)
+      }
+      return toDoArr;
+    }
+
+  }
+
+  // Достаем массив обьектов из LocalStorage по селектору - selector
+  function getFromLocalStorage(selector) {
+    // забираем JSON по селектору из из LocalStorage
+    let curJsonStr = localStorage.getItem(selector);
+    // переводим JSON в маcсив обьектов
+    let curDoArr = JSON.parse(curJsonStr);
+    // Смотрим что достали и распарсили
+    console.log('Достали и распарсили в ', selector, curDoArr);
+    return curDoArr
   }
 
   window.createTodoApp = createTodoApp;
-
-  // document.addEventListener('DOMContentLoaded', function(){
-  //   createTodoApp(document.getElementById('my_todos'), title = 'Мой Список Дел');
-  //   createTodoApp(document.getElementById('mom_todos'), title = 'Мамин Список Дел');
-  //   createTodoApp(document.getElementById('dad_todos'), title = 'Папин Список Дел');
-  // });
-
+  window.getFromLocalStorage = getFromLocalStorage;
 })();

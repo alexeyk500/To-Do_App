@@ -10,8 +10,37 @@
           crossorigin="anonymous">
     <script defer src="./todo-app.js"></script>
     <script>
+
+
+      // // парсим массив в json
+      // let json_str = JSON.stringify(doArr);
+      // console.log(json_str);
+
+      // // парсим json в массив
+      // let new_doArr = JSON.parse(json_str);
+      // console.log(new_doArr);
+
+      // // кладем массив в localstorage
+      // localStorage.setItem('my_todo', json_str);
+
+      // // достаем из массива
+      // let new_json_str = localStorage.getItem('my_todo');
+      // console.log('Достали из хранилища', new_json_str);
+
       document.addEventListener('DOMContentLoaded', function(){
-        createTodoApp(document.getElementById('todo-app'), title = 'Мой Список Дел');
+        // заголовок
+        title = 'Мой Список Дел';
+        // Массив с делами на вход
+        let doArr = [{name:'Первое Дело', done:true}, {name:'Второе Дело', done:false}];
+        // Проверяем хранилище
+        let my_storage = getFromLocalStorage(title);
+        if (my_storage) {
+          console.log('my_storage - ', my_storage)
+          createTodoApp(document.getElementById('todo-app'), title = 'Мой Список Дел', my_storage);
+        } else {
+          console.log('my_storage - ', my_storage)
+          createTodoApp(document.getElementById('todo-app'), title = 'Мой Список Дел', doArr);
+        }
       });
     </script>
 </head>
