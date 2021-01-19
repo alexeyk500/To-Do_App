@@ -10,19 +10,38 @@
           crossorigin="anonymous">
     <script defer src="./todo-app.js"></script>
     <script>
+
       document.addEventListener('DOMContentLoaded', function(){
-        createTodoApp(document.getElementById('todo-app'), title = 'Папин Список Дел');
+        // заголовок
+        title = 'Папин Список Дел';
+        // Массив с делами на вход
+        let doArr = [{name:'Первое Дело  - быть мужчиной', done:false},
+                     {name:'Второе Дело  - зарабатывать деньги', done:true},
+                     {name:'Третье Дело  - любить семью', done:true},
+                     {name:'Четвертое Дело  - защищать семью', done:true},
+                    ];
+        // Проверяем хранилище
+        let my_storage = getFromLocalStorage(title);
+        if (my_storage.length) {
+          console.log('my_storage - ', my_storage)
+          createTodoApp(document.getElementById('todo-app'), title = title, my_storage);
+        } else {
+          console.log('doArr - ', doArr)
+          createTodoApp(document.getElementById('todo-app'), title = title, doArr);
+        }
       });
     </script>
 </head>
 <body>
   <div class="container mb-5">
     <nav class="nav">
-      <a href="./index.html" class="nav-link">Мой Список Дел</a>
-      <a href="./mom.html" class="nav-link">Мамин Список Дел</a>
-      <a href="./dad.html" class="nav-link">Папин Список Дел</a>
+      <a href="index.html" class="nav-link">Мой Список Дел</a>
+      <a href="mom.html" class="nav-link">Мамин Список Дел</a>
+      <a href="dad.html" class="nav-link">Папин Список Дел</a>
     </nav>
     <div id="todo-app" class="container"></div>
   </div>
 </body>
 </html>
+
+

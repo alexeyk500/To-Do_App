@@ -10,8 +10,24 @@
           crossorigin="anonymous">
     <script defer src="./todo-app.js"></script>
     <script>
+
       document.addEventListener('DOMContentLoaded', function(){
-        createTodoApp(document.getElementById('todo-app'), title = 'Мамин Список Дел');
+        // заголовок
+        title = 'Мамин Список Дел';
+        // Массив с делами на вход
+        let doArr = [{name:'Первое Дело  - любить меня', done:false},
+                     {name:'Второе Дело  - любить Папу', done:true},
+                     {name:'Третье Дело  - любить Дочь', done:false},
+                    ];
+        // Проверяем хранилище
+        let my_storage = getFromLocalStorage(title);
+        if (my_storage.length) {
+          console.log('my_storage - ', my_storage)
+          createTodoApp(document.getElementById('todo-app'), title = title, my_storage);
+        } else {
+          console.log('doArr - ', doArr)
+          createTodoApp(document.getElementById('todo-app'), title = title, doArr);
+        }
       });
     </script>
 </head>
@@ -26,3 +42,4 @@
   </div>
 </body>
 </html>
+

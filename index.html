@@ -11,34 +11,19 @@
     <script defer src="./todo-app.js"></script>
     <script>
 
-
-      // // парсим массив в json
-      // let json_str = JSON.stringify(doArr);
-      // console.log(json_str);
-
-      // // парсим json в массив
-      // let new_doArr = JSON.parse(json_str);
-      // console.log(new_doArr);
-
-      // // кладем массив в localstorage
-      // localStorage.setItem('my_todo', json_str);
-
-      // // достаем из массива
-      // let new_json_str = localStorage.getItem('my_todo');
-      // console.log('Достали из хранилища', new_json_str);
-
       document.addEventListener('DOMContentLoaded', function(){
         // заголовок
         title = 'Мой Список Дел';
         // Массив с делами на вход
-        let doArr = [{name:'Первое Дело', done:true}, {name:'Второе Дело', done:false}];
+        let doArr = [{name:'Первое Дело - учиться', done:true},
+                     {name:'Второе Дело - любить маму и папу', done:false}];
         // Проверяем хранилище
         let my_storage = getFromLocalStorage(title);
-        if (my_storage) {
+        if (my_storage.length) {
           console.log('my_storage - ', my_storage)
           createTodoApp(document.getElementById('todo-app'), title = 'Мой Список Дел', my_storage);
         } else {
-          console.log('my_storage - ', my_storage)
+          console.log('doArr - ', doArr)
           createTodoApp(document.getElementById('todo-app'), title = 'Мой Список Дел', doArr);
         }
       });

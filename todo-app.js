@@ -107,10 +107,12 @@
         // добавляем обработчики на кнопки
         todoItem.doneButton.addEventListener('click', function() {
           todoItem.item.classList.toggle('list-group-item-success');
+          pushToLocalStorage();
         })
         todoItem.deleteButton.addEventListener('click', function() {
           if (confirm('Вы уверены')) {
             todoItem.item.remove();
+            pushToLocalStorage();
           }
         })
         todoList.append(todoItem.item)
@@ -131,10 +133,12 @@
       // добавляем обработчики на кнопки
       todoItem.doneButton.addEventListener('click', function() {
         todoItem.item.classList.toggle('list-group-item-success');
+        pushToLocalStorage();
       })
       todoItem.deleteButton.addEventListener('click', function() {
         if (confirm('Вы уверены')) {
           todoItem.item.remove();
+          pushToLocalStorage();
         }
       })
       todoList.append(todoItem.item)
