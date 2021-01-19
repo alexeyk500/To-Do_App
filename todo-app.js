@@ -13,6 +13,11 @@
     let buttonWrapper = document.createElement('div');
     let button = document.createElement('button');
 
+    // очищаем input и делаем кнопку disabled
+    input.value = '';
+    button.disabled = true;
+    // console.log('На старте установил - button.disabled = true;')
+
     form.classList.add('input-group', 'mb-3');
     input.classList.add('form-control');
     input.placeholder = 'Введите название нового дела';
@@ -27,6 +32,7 @@
     return { form,
              input,
              buttonWrapper,
+             button,
             };
   }
 
@@ -66,15 +72,25 @@
             };
   }
 
-  document.addEventListener('DOMContentLoaded', function(){
-    let container = document.getElementById('todo_app');
-    let todoAppTitle = createAppTitle('Список Дел');
+  function createTodoApp(container, title = 'Список Дел') {
+    let todoAppTitle = createAppTitle(title);
     let todoItemForm = createTodoItemForm();
     let todoList = createTodoList();
 
     container.append(todoAppTitle);
     container.append(todoItemForm.form);
     container.append(todoList);
+
+    // если в input что-то ввели,то делаем кнопку disabled
+    todoItemForm.input.addEventListener('input', function() {
+      if (todoItemForm.input.value) {
+        // console.log('Обнаружил печать в input')
+        todoItemForm.button.disabled = false;
+      } else {
+        // console.log('Обнаружил печать в input, input опять пустой')
+        todoItemForm.button.disabled = true;
+      }
+    });
 
     // Функция создания нового элемента списка дел
     todoItemForm.form.addEventListener('submit', function(e) {
@@ -96,12 +112,20 @@
           todoItem.item.remove();
         }
       })
-
       todoList.append(todoItem.item)
       // очищаем поле ввода после создания элемента списка с делом
+      // и делаем кнопку disabled
       todoItemForm.input.value = '';
+      todoItemForm.button.disabled = true;
     });
+  }
 
-  });
+  window.createTodoApp = createTodoApp;
+
+  // document.addEventListener('DOMContentLoaded', function(){
+  //   createTodoApp(document.getElementById('my_todos'), title = 'Мой Список Дел');
+  //   createTodoApp(document.getElementById('mom_todos'), title = 'Мамин Список Дел');
+  //   createTodoApp(document.getElementById('dad_todos'), title = 'Папин Список Дел');
+  // });
 
 })();
