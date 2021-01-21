@@ -21,10 +21,15 @@
         let my_storage = getFromLocalStorage(title);
         if (my_storage.length) {
           console.log('my_storage - ', my_storage)
-          createTodoApp(document.getElementById('todo-app'), title = 'Мой Список Дел', my_storage);
+          createTodoApp(document.getElementById('todo-app'), title = title, my_storage);
         } else {
-          console.log('doArr - ', doArr)
-          createTodoApp(document.getElementById('todo-app'), title = 'Мой Список Дел', doArr);
+          console.log('typeof doArr', typeof doArr)
+          if (typeof doArr !== "undefined") {
+            console.log('doArr - ', doArr)
+            createTodoApp(document.getElementById('todo-app'), title = title, doArr);
+          } else {
+            createTodoApp(document.getElementById('todo-app'), title = title);
+          }
         }
       });
     </script>
